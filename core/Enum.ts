@@ -1,7 +1,10 @@
 import { ObjectUtil } from '../util/ObjectUtil';
+import { StringUtil, RandomStringType } from '../util/StringUtil';
 import { RTKObject } from './RTKObject';
 
 const language: string = "pt-BR";
+
+var Reflect = window['Reflect'];
 
 export abstract class Enum extends RTKObject {
     private _name: string;
@@ -23,17 +26,22 @@ export abstract class Enum extends RTKObject {
     }
 
     public static values<T extends Enum>(): T[] {
-        if (ObjectUtil.isBlank(this._values[this.name])) {
-            this._values[this.name] = [];
+
+        if (ObjectUtil.isBlank(this.prototype["serialID"])) {
+            this.prototype["serialId"] = StringUtil.randomString(16, RandomStringType.ALPHANUMERIC);
+        }
+
+        if (ObjectUtil.isBlank(this._values[this.prototype["serialID"]])) {
+            this._values[this.prototype["serialID"]] = [];
             let properties: string[] = Object.keys(this);
 
             properties.forEach(property => {
                 if (this[property] instanceof Enum) {
-                    this._values[this.name].push(this[property]);
+                    this._values[this.prototype["serialID"]].push(this[property]);
                 }
             });
 
-            this._values[this.name].sort((propertyA, propertyB) => {
+            this._values[this.prototype["serialID"]].sort((propertyA, propertyB) => {
 
                 if (propertyA.label < propertyB.label) {
                     return -1;
@@ -47,7 +55,7 @@ export abstract class Enum extends RTKObject {
             });
         }
 
-        return this._values[this.name] as any;
+        return this._values[this.prototype["serialID"]] as any;
     }
 
     public static parse<T extends Enum>(value: any): T {
@@ -81,7 +89,7 @@ export abstract class Enum extends RTKObject {
         return this._name;
     }
 
-    public deepClone(): Enum {
+    public deepClone(): any {
         return this;
     }
 }

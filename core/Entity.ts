@@ -4,6 +4,8 @@ import { StringUtil } from '../util/StringUtil';
 import { Enum } from './Enum';
 import { typed } from "./";
 
+var Reflect = window['Reflect'];
+
 export class Entity extends RTKObject {
 
     constructor() {

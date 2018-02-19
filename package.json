@@ -3,17 +3,31 @@
   "version": "0.0.0-alpha.1",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "cleanup": "rimraf dist",
+    "package:json": "node scripts/generate-packagejson.js",
+    "copy": "copyfiles CHANGELOG.md README.md dist",
+    "tsc": "node_modules/.bin/tsc -p ./tsconfig.json",
+    "ngc": "node_modules/.bin/ngc -p ./tsconfig-aot.json",
+    "build": "npm run cleanup & npm run tsc & npm run ngc & npm run copy & npm run package:json"
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@angular/cli": "1.7.0",
+    "@angular/compiler": "^5.2.5",
+    "@angular/compiler-cli": "^5.2.5",
     "@types/express": "^4.0.34",
     "@types/lodash": "^4.14.64",
-    "typescript": "^2.1.4"
+    "copyfiles": "1.2.0",
+    "rimraf": "2.6.2",
+    "typescript": "^2.7.0"
   },
   "dependencies": {
+    "@angular/core": "^5.2.5",
     "express": "^4.14.0",
     "lodash": "^4.17.4",
-    "reflect-metadata": "0.1.10"
+    "reflect-metadata": "^0.1.10",
+    "zone.js": "^0.8.20"
   }
 }

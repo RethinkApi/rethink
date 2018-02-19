@@ -2,6 +2,8 @@ import { RandomStringType, StringUtil } from '../util/StringUtil';
 import { ObjectUtil } from "../util/ObjectUtil";
 import * as _ from 'lodash';
 
+var Reflect = window['Reflect'];
+
 export abstract class RTKObject {
     private static _obj_id: number = 0;
     private obj_id: number;
@@ -73,7 +75,7 @@ export abstract class RTKObject {
      * Returns class name of this object
      */
     public get className(): string {
-        return this.constructor.name;
+        return (this.constructor as any).name;
     }
 
     /**
